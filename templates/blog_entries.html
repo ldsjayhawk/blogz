@@ -2,16 +2,13 @@
 
 {% block content %}
 
-
-   
-
     {% if blogs|length == 0 %}
     <p>No blogs yet</p>
     {% else %}
 
         <ul>
             {% for blog in blogs %}
-            <li>{{blog}}</li>
+            <li>{{blog-title}}{{blog}}</li>
             {% endfor %}
         </ul>
 

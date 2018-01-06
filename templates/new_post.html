@@ -1,25 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <!DOCTYPE html>
 <html>
     <body>
-        <form action="/newpost" method='POST'>
-            <style>
-                .error {color: red;}
-                textarea {{
-                            margin: 10px 0;
-                            width: 540px;
-                            height: 120px;
-                        }}
-            </style>
-            <h1>Add a Blog Entry</h1>
-            <label for="blog-title">Title for your blog post</label>
-            <input name="blog-title" type="text"  />
-                <span class="error">{{ user_name_error }}</span>
-            <br>
-            <label for="blog-post">Enter your new blog post:</label>
-            <textarea name="blog-post"></textarea>
-                <span class="error">{{ user_password_error }}</span>
-            <br>
-            <input type="submit" value="Submit"/>
+        <h1>Build-a-blog!</h1>
+        <form method='post'>
+            <label>Blog Title:
+                <input name="blog-title" type="text" />
+            </label>
+            <label>
+            <textarea name="blog"></textarea>
+            <input type="submit" value='Add Entry' />
+            </label>
         </form>
+        <hr />
     </body>    
 </html>
+
+{% endblock %}

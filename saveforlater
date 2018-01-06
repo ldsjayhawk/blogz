@@ -4,12 +4,26 @@ app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
 class Blog(db.Model):
-
+    
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
-    body = db.Column(db.Longtext)
+    body = db.Column(db.String(1000))
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, title, body):
+        self.title = title
+        self.body = body
 
 if __name__ -- 'main':
+
+<style>
+    textarea {{
+    margin: 10px 0;
+    width: 540px;
+    height: 120px;
+    }}
+</style>
+    
+
+    @app.route('/newpost', methods=['POST', 'GET'])
+def index():
+    return render_template('new_post.html')
