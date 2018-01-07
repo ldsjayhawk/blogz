@@ -39,11 +39,9 @@ def new_post():
         if " " in blog:
             blank_blog_error = "Blog post cannot be blank."
 
-        new_blog = Blog(blog_title, body)
+        new_blog = Blog(blog_title, blog)
         db.session.add(new_blog)
         db.session.commit
-        #create a blog object to put into database
-        #add post to db and commit post to db
         blogs = Blog.query.all()
         return render_template('blog_entries.html', title="Build A Blog", blogs=blogs, 
             blank_blog_title_error=blank_blog_title_error, blank_blog_error=blank_blog_error)
@@ -53,7 +51,7 @@ def single_post():
     if request.method == 'GET':
         blog_id = int(request.args.get['blog-id'])
         blog = Task.query.get(task_id)        
-        return render_template('single_post.html', title="Build A Blog", blog=blog)
+        return render_template('single_post.html', title="Build A Blog", blog_id=blog_id, blog=blog)
 
 
 if __name__ == '__main__':
