@@ -5,13 +5,16 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <h1>Build-a-blog!</h1>
+        <h1>{{title}}</h1>
         <form method='post'>
             <label>Blog Title:
                 <input name="blog-title" type="text" />
+                    <span class="error">{{ blank_blog_title_error }}</span>
             </label>
+            <br>
             <label>
             <textarea name="blog"></textarea>
+                <span class="error">{{ blog_title_error }}</span>
             <input type="submit" value='Add Entry' />
             </label>
         </form>
