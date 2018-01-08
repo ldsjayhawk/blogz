@@ -3,7 +3,10 @@
 {% block content %}
 
 <p>
-    {{blog}}
+    {% for blog in blogs %}
+        {{blog.title}}
+        {{blog.body}}
+    {% endfor %}
 </p>
 
 {% endblock %}

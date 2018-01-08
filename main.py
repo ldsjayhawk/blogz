@@ -41,17 +41,18 @@ def new_post():
 
         new_blog = Blog(blog_title, blog)
         db.session.add(new_blog)
-        db.session.commit
+        db.session.commit()
         blogs = Blog.query.all()
         return render_template('blog_entries.html', title="Build A Blog", blogs=blogs, 
             blank_blog_title_error=blank_blog_title_error, blank_blog_error=blank_blog_error)
 
-@app.route('/singlepost', methods=['POST','GET'])
-def single_post():
-    if request.method == 'GET':
-        blog_id = int(request.args.get['blog-id'])
-        blog = Task.query.get(task_id)        
-        return render_template('single_post.html', title="Build A Blog", blog_id=blog_id, blog=blog)
+#@app.route('/blog', methods=['GET'])
+#def single_post():
+##    blog = Blog.query.get(blog_id)
+ #   if request.method == 'GET':
+ #       blogs = Blog.query.all()
+ #       blog_id = int(request.args.get['blog-id'])
+ #       return render_template('single_post.html', title="Build A Blog", blog_id=blog_id, blog=blog)
 
 
 if __name__ == '__main__':
