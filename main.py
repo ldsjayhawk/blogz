@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:blog@localhost:8889/build-a-blog'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build_a_blog:blog@localhost:8889/build_a_blog'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -29,30 +29,35 @@ def new_post():
 
     if request.method =='POST':
         blog_title = request.form['blog-title']
-        blog = request.form['blog']
+        blog_post = request.form['blog_post']
         blank_blog_title_error = ""
         blank_blog_error = ""
 
-        if " " in blog_title:
+        if blog_title == "":
             blank_blog_title_error = "Blog title cannot be blank."
 
-        if " " in blog:
+        if blog_post == "":
             blank_blog_error = "Blog post cannot be blank."
 
-        new_blog = Blog(blog_title, blog)
+        new_blog = Blog(blog_title, blog_post)
         db.session.add(new_blog)
         db.session.commit()
         blogs = Blog.query.all()
-        return render_template('blog_entries.html', title="Build A Blog", blogs=blogs, 
-            blank_blog_title_error=blank_blog_title_error, blank_blog_error=blank_blog_error)
 
-#@app.route('/blog', methods=['GET'])
-#def single_post():
-##    blog = Blog.query.get(blog_id)
- #   if request.method == 'GET':
- #       blogs = Blog.query.all()
- #       blog_id = int(request.args.get['blog-id'])
- #       return render_template('single_post.html', title="Build A Blog", blog_id=blog_id, blog=blog)
+        if blank_blog_title_error != "" or blank_blog_error != "":
+            return render_template('new_post.html', title="Build A Blog", blogs=blogs, 
+            blank_blog_title_error=blank_blog_title_error, blank_blog_error=blank_blog_error)
+            
+
+        else: 
+            return render_template('blog_entries.html', title="Add", blogs=blogs)
+
+@app.route('/blog', methods=['GET'])
+def single_post():
+    if request.args:
+        blog_id = request.args.get("id")
+        blog = Blog.query.get(blog_id)
+        return render_template('single_post.html', title="Build A Blog", blog=blog)
 
 
 if __name__ == '__main__':

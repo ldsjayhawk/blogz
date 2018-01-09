@@ -2,11 +2,12 @@
 
 {% block content %}
 
-<p>
-    {% for blog in blogs %}
+
+    <p>
         {{blog.title}}
         {{blog.body}}
-    {% endfor %}
-</p>
+        {{blog.id}}
+    </p>
+
 
 {% endblock %}

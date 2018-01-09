@@ -6,15 +6,15 @@
 <html>
     <body>
         <h1>{{title}}</h1>
-        <form method='post'>
+        <form action ="/newpost" method='post'>
             <label>Blog Title:
                 <input name="blog-title" type="text" />
                     <span class="error">{{ blank_blog_title_error }}</span>
             </label>
             <br>
             <label>
-            <textarea name="blog"></textarea>
-                <span class="error">{{ blog_title_error }}</span>
+            <textarea name="blog_post"></textarea>
+                <span class="error">{{ blank_blog_error }}</span>
             <input type="submit" value='Add Entry' />
             </label>
         </form>
