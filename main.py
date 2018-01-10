@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build_a_blog:blog@localhost:8889/build_a_blog'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:blogz@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -11,16 +11,64 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(1000))
+    #ownerid = db.Column(db.String())
 
-    def __init__(self, title, body):
+    def __init__(self, title, body, ownerid):
         self.title = title
         self.body = body
+        #self.ownerid = ownerid
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120), unique=True)
+    password = db.Column(db.String(120))
+    #blogs = db.Column(db.String())
+
+    def __init__(self, username, password, blogs):
+        self.username = username
+        self.password = password
+        #self.blogs = blogs
+
+@app.route('/login', methods=['POST','GET'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user - User.query.filter_by(email=email).first()
+        if user and user.password == password:
+            #log user in
+            return redirect('/')
+        else:
+            #why did user fail to login
+            return "<h3>Error!</h3>" #redirect('/login')
+
+    return render_template('login.html')
+
+@app.route('/register', methods=['POST','GET'])
+def register():
+    if request.method == 'POST':
+        email = request.form('email')
+        password = request.form('password')
+        verify = request.form('verify')
+        #Validate
+        
+        existing_user - User.query.filter_by(email=email).first()
+        if not existing_user():
+            new_user = User(email,password)
+            db.session.add(new_user)
+            db.session_commit()
+            #remember the user
+            return redirect('/')
+        else:
+            return "<h3>Duplicate User</h3>"
+        
+    return render_template('register.html', title="Register")
 
 @app.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':
         blogs = Blog.query.all()
-        return render_template('blog_entries.html', title="Build A Blog", blogs=blogs)
+        return render_template('blog_entries.html', title="Blogz", blogs=blogs)
 
 @app.route('/newpost', methods=['POST','GET'])
 def new_post():
@@ -45,7 +93,7 @@ def new_post():
         blogs = Blog.query.all()
 
         if blank_blog_title_error != "" or blank_blog_error != "":
-            return render_template('new_post.html', title="Build A Blog", blogs=blogs, 
+            return render_template('new_post.html', title="Blogz", blogs=blogs, 
             blank_blog_title_error=blank_blog_title_error, blank_blog_error=blank_blog_error)
             
 
@@ -57,7 +105,7 @@ def single_post():
     if request.args:
         blog_id = request.args.get("id")
         blog = Blog.query.get(blog_id)
-        return render_template('single_post.html', title="Build A Blog", blog=blog)
+        return render_template('single_post.html', title="Blogz", blog=blog)
 
 
 if __name__ == '__main__':
