@@ -27,3 +27,30 @@ if __name__ -- 'main':
     @app.route('/newpost', methods=['POST', 'GET'])
 def index():
     return render_template('new_post.html')
+
+
+    
+        """if len('username') < 3 or len('username') > 20 or "" in 'username':
+            username_error = "Please enter a valid user name between 3 and 20 characters long."
+
+        if len('password') < 3 or len('password') > 20 or "" in 'password':
+            password_error = "Please enter a valid password between 3 and 20 characters long."
+            
+        if ('username_error' == "" and 'password_error' == ""):"""
+
+     """if len(username) < 3 or len(username) > 20 or " " in username:
+        username_error = "Please enter a valid user name between 3 and 20 characters long."
+
+    if len(password) < 3 or len(password) > 20 or " " in password:
+        password_error = "Please enter a valid password between 3 and 20 characters long."
+
+    if verify_password != password:
+        verify_password_error = "Passwords do not match."
+
+    #if user_email != "":
+        if not "." in user_email or not "@" in user_email:
+            user_email_error = "Please enter a valid user email."
+        if len(user_email) < 3 or len(user_email) > 20 or " " in user_email:
+           user_email_error = "Please enter a valid user email."
+
+    if (username_error == "" and password_error == "" and verify_password_error == ""):"

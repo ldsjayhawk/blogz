@@ -12,23 +12,22 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(1000))
-    #ownerid = db.Column(db.String())
+    owner_id = db.Column(db.Integer, db.ForeignKey(user.id))
 
-    def __init__(self, title, body, ownerid):
+    def __init__(self, title, body, owner):
         self.title = title
         self.body = body
-        #self.ownerid = ownerid
+        self.owner = owner
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(120))
-    #blogs = db.Column(db.String())
+    blogs = db.relationship('Blog', backref='owner')
 
-    def __init__(self, username, password, blogs):
+    def __init__(self, username, password):
         self.username = username
         self.password = password
-        #self.blogs = blogs
 
 @app.before_request
 def require_login():
@@ -43,15 +42,6 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-
-    if len(username) < 3 or len(username) > 20 or " " in username:
-        username_error = "Please enter a valid user name between 3 and 20 characters long."
-
-    if len(password) < 3 or len(password) > 20 or " " in user_password:
-        password_error = "Please enter a valid password between 3 and 20 characters long."
-        
-    if (username_error == "" and password_error == ""):
-
         if user and user.password == password:
             session['username'] = username
             return redirect('/')
@@ -68,25 +58,10 @@ def register():
         password = request.form['password']
         verify_password = request.form['verify-password']
 
-#validation of registration form
-    if len(username) < 3 or len(username) > 20 or " " in username:
-        username_error = "Please enter a valid user name between 3 and 20 characters long."
-
-    if len(password) < 3 or len(password) > 20 or " " in user_password:
-        password_error = "Please enter a valid password between 3 and 20 characters long."
-
-    if verify-password != password:
-        verify_password_error = "Passwords do not match."
-
-    #if user_email != "":
-    #    if not "." in user_email or not "@" in user_email:
-    #        user_email_error = "Please enter a valid user email."
-    #    if len(user_email) < 3 or len(user_email) > 20 or " " in user_email:
-    #        user_email_error = "Please enter a valid user email."
-
-    if (username_error == "" and password_error == "" and verify_password_error == ""):
-        
         existing_user = User.query.filter_by(username=username).first()
+
+        #validation of registration form
+        
         if not existing_user():
             new_user = User(username,password)
             db.session.add(new_user)
@@ -108,7 +83,7 @@ def logout():
 def index():
     if request.method == 'GET':
         blogs = Blog.query.all()
-        return render_template('blog_entries.html', title="Blogz", blogs=blogs)
+return render_template('blog_entries.html', title="Blogz", blogs=blogs)
 
 @app.route('/newpost', methods=['POST','GET'])
 def new_post():
