@@ -6,6 +6,7 @@ app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:blogz@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
+app.secret_key = 'zxcvbnmmasdfghjkl'
 
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,18 +32,28 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    if 'email' not in session:
+    allowed_routes = ['login','register']
+    if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
     
 
 @app.route('/login', methods=['POST','GET'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
+        username = request.form['username']
         password = request.form['password']
-        user - User.query.filter_by(email=email).first()
+        user = User.query.filter_by(username=username).first()
+
+    if len(username) < 3 or len(username) > 20 or " " in username:
+        username_error = "Please enter a valid user name between 3 and 20 characters long."
+
+    if len(password) < 3 or len(password) > 20 or " " in user_password:
+        password_error = "Please enter a valid password between 3 and 20 characters long."
+        
+    if (username_error == "" and password_error == ""):
+
         if user and user.password == password:
-            session['email'] = email
+            session['username'] = username
             return redirect('/')
         else:
             #why did user fail to login
@@ -53,27 +64,45 @@ def login():
 @app.route('/register', methods=['POST','GET'])
 def register():
     if request.method == 'POST':
-        email = request.form('email')
-        password = request.form('password')
-        verify = request.form('verify')
-        #Validate
+        username = request.form['username']
+        password = request.form['password']
+        verify_password = request.form['verify-password']
+
+#validation of registration form
+    if len(username) < 3 or len(username) > 20 or " " in username:
+        username_error = "Please enter a valid user name between 3 and 20 characters long."
+
+    if len(password) < 3 or len(password) > 20 or " " in user_password:
+        password_error = "Please enter a valid password between 3 and 20 characters long."
+
+    if verify-password != password:
+        verify_password_error = "Passwords do not match."
+
+    #if user_email != "":
+    #    if not "." in user_email or not "@" in user_email:
+    #        user_email_error = "Please enter a valid user email."
+    #    if len(user_email) < 3 or len(user_email) > 20 or " " in user_email:
+    #        user_email_error = "Please enter a valid user email."
+
+    if (username_error == "" and password_error == "" and verify_password_error == ""):
         
-        existing_user - User.query.filter_by(email=email).first()
+        existing_user = User.query.filter_by(username=username).first()
         if not existing_user():
-            new_user = User(email,password)
+            new_user = User(username,password)
             db.session.add(new_user)
             db.session_commit()
-            session['email'] = email
+            session['username'] = username
             return redirect('/')
         else:
-            return "<h3>Duplicate User</h3>"
+            username_error = "This username already exists"
+            return render_template('login.html', username=username, username_error=username_error) 
         
     return render_template('register.html', title="Register")
 
 @app.route('/logout')
 def logout():
-    del session['email']
-    return redirect('/')
+    del session['username']
+    return redirect('/login')
 
 @app.route('/', methods=['GET'])
 def index():
