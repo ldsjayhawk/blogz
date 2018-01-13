@@ -90,7 +90,7 @@ def new_post():
 
     if request.method =='POST':
         blog_title = request.form['blog-title']
-        blog_post = request.form['blog_post']
+        blog_post = request.form['blog-post']
         blank_blog_title_error = ""
         blank_blog_error = ""
 
@@ -107,24 +107,25 @@ def new_post():
         
         user = User.query.filter_by(username=session['username']).first()
         user_id = request.args.get("user.id")
+        user_name = request.args.get("user.username")
         new_blog = Blog(blog_title, blog_post, user_id)
         db.session.add(new_blog)
         db.session.commit()
         blogs = Blog.query.all()
-        return render_template('blog_entries.html', title="Add", blogs=blogs)
+        return render_template('blog_entries.html', title="Add", blogs=blog)
 
 @app.route('/index', methods=['GET'])
 def index():
     if request.args:
         user_id = request.args.get("id")
-        user = query.get(user_id)
+        user = User.query.get(user_id)
         return render_template('index.html', title="Blogz", users=user)   
 
 @app.route('/blog', methods=['GET'])
 def single_post():
     if request.args:
         blog_id = request.args.get("id")
-        blog = query.get(blog_id)
+        blog = Blog.query.get(blog_id)
         return render_template('single_post.html', title="Blogz", blog=blog)
 
 
