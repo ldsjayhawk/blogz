@@ -107,7 +107,7 @@ def new_post():
         
         user = User.query.filter_by(username=session['username']).first()
         user_id = request.args.get("user.id")
-        user_name = request.args.get("user.username")
+        #user_name = request.args.get("user.username")
         new_blog = Blog(blog_title, blog_post, user_id)
         db.session.add(new_blog)
         db.session.commit()
