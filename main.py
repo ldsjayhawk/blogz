@@ -117,7 +117,7 @@ def new_post():
 @app.route('/index', methods=['GET'])
 def index():
     if request.args:
-        user_id = request.args.get("id")
+        user_id = request.args.get("owner.id")
         user = User.query.get(user_id)
         return render_template('index.html', title="Blogz", users=user)   
 

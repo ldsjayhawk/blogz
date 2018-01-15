@@ -10,7 +10,6 @@
         {% for blog in blogs %}
             <h3><a href='/blog?id={{blog.id}}'>{{blog.title}}</a></h3>
             <p>{{blog.body}}
-            <br>
             by<a href='/index?user={{blog.owner_id}}'> {{session['username']}}</a>
         </p>
         {% endfor %}
