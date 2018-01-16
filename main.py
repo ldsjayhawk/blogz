@@ -106,20 +106,19 @@ def new_post():
              
         
         user = User.query.filter_by(username=session['username']).first()
-        user_id = request.args.get("user.id")
-        #user_name = request.args.get("user.username")
-        new_blog = Blog(blog_title, blog_post, user_id)
+        new_blog = Blog(blog_title, blog_post, user)
         db.session.add(new_blog)
         db.session.commit()
         blogs = Blog.query.all()
-        return redirect('/blog?id=id')
-        #return render_template('blog_entries.html', title="Add", blogs=blogs)
+        #return redirect('/blog?id=id')
+        return render_template('blog_entries.html', title="Add", blogs=blogs)
 
 @app.route('/index', methods=['GET'])
 def index():
     if request.args:
-        user_id = request.args.get("user.id")
-        blogs = Blog.query.filter_by(owner=user_id).all()
+        user_id = request.args.get("user")
+        user=User.query.get(user_id)
+        blogs = Blog.query.filter_by(owner=user).all()
         return render_template('user_blogs.html', title="Blogz", blogs=blogs) 
 
 @app.route('/blog', methods=['GET'])
