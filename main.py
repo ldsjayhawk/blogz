@@ -95,10 +95,12 @@ def new_post():
         blank_blog_error = ""
 
         if blog_title == "":
-            blank_blog_title_error = "Blog title cannot be blank."
+            flash('Blog title cannot be blank.', 'error')
+            #blank_blog_title_error = "Blog title cannot be blank."
 
         if blog_post == "":
-            blank_blog_error = "Blog post cannot be blank."
+            flash('Blog post cannot be blank.', 'error')
+            #blank_blog_error = "Blog post cannot be blank."
 
         if blank_blog_title_error != "" or blank_blog_error != "":
             return render_template('new_post.html', title="Blogz", blogs=blogs, 
@@ -110,8 +112,10 @@ def new_post():
         db.session.add(new_blog)
         db.session.commit()
         blogs = Blog.query.all()
-        #return redirect('/blog?id=id')
-        return render_template('blog_entries.html', title="Add", blogs=blogs)
+        query_param_url = "/blog?id=" + str(new_blog.id)
+        return redirect(query_param_url)
+        #return redirect('/blog?user=user.id')
+        #return render_template('blog_entries.html', title="Add", blogs=blogs)
 
 @app.route('/index', methods=['GET'])
 def index():
