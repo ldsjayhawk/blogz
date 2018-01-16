@@ -78,10 +78,10 @@ def logout():
     return redirect('/login')
 
 @app.route('/', methods=['GET'])
-def blog_index():
+def user_index():
     if request.method == 'GET':
-        blogs = Blog.query.all()
-    return render_template('blog_entries.html', title="Blogz", blogs=blogs)
+        users = User.query.all()
+    return render_template('index.html', title="Blogz", users=users)
 
 @app.route('/newpost', methods=['POST','GET'])
 def new_post():
@@ -112,14 +112,15 @@ def new_post():
         db.session.add(new_blog)
         db.session.commit()
         blogs = Blog.query.all()
-        return render_template('blog_entries.html', title="Add", blogs=blog)
+        return redirect('/blog?id=id')
+        #return render_template('blog_entries.html', title="Add", blogs=blogs)
 
 @app.route('/index', methods=['GET'])
 def index():
     if request.args:
-        user_id = request.args.get("owner.id")
-        user = User.query.get(user_id)
-        return render_template('index.html', title="Blogz", users=user)   
+        user_id = request.args.get("user.id")
+        blogs = Blog.query.filter_by(owner=user_id).all()
+        return render_template('user_blogs.html', title="Blogz", blogs=blogs)   
 
 @app.route('/blog', methods=['GET'])
 def single_post():

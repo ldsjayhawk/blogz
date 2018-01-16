@@ -6,9 +6,10 @@
     <p>No users yet</p>
     {% else %}
 
-           
+
         {% for user in users %}
-            <h3><a href='/index?user={{blog.owner_id}}'> {{session['username']}}</a>
+            <h3><a href='/index?user={{user.id}}'> {{user.username}} </a>
+                
         {% endfor %}
         
 

@@ -2,11 +2,11 @@
 
 {% block content %}
 
-    {% if blogs|length == 0 %}
-    <p>No blogs yet</p>
+    {% if users|length == 0 %}
+    <p>No users yet</p>
     {% else %}
 
-        
+
         {% for blog in blogs %}
             <h3><a href='/blog?id={{blog.id}}'>{{blog.title}}</a></h3>
             <p>{{blog.body}}
