@@ -120,7 +120,7 @@ def index():
     if request.args:
         user_id = request.args.get("user.id")
         blogs = Blog.query.filter_by(owner=user_id).all()
-        return render_template('user_blogs.html', title="Blogz", blog=blogs)   
+        return render_template('user_blogs.html', title="Blogz", blogs=blogs) 
 
 @app.route('/blog', methods=['GET'])
 def single_post():
